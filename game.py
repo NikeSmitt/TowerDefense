@@ -6,6 +6,8 @@ from enemies.club import Club
 from enemies.wizard import Wizard
 from towers.archerTowerLong import ArcherTowerLong
 from towers.archerTowerShort import ArcherTowerShort
+from towers.rangeTower import RangeTower
+from towers.damageTower import DamageTower
 
 import time
 import random
@@ -23,7 +25,8 @@ class Game:
         self.height = int(self.width / (1920 / 1080))
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.towers = [ArcherTowerShort(300, 300), ArcherTowerShort(950, 380), ArcherTowerLong(280, 450)]
+        self.attack_towers = [ArcherTowerShort(300, 300), ArcherTowerShort(950, 380), ArcherTowerLong(280, 450)]
+        self.support_towers = [RangeTower(500, 100), DamageTower(500, 400)]
         self.lives = 10
         self.money = 100
         self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -48,15 +51,20 @@ class Game:
             if time.time() - self.timer >= self.enemy_generate_time:
                 self.timer = time.time()
                 self.enemies.append(random.choice([Scorpion(), Wizard(), Club()]))
+                self.enemy_generate_time = random.randrange(1, 3) / 2
 
             clock.tick(FPS)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
 
-            # loop through towers
-            for tower in self.towers:
+            # loop through attack towers
+            for tower in self.attack_towers:
                 tower.attack(self.enemies)
+
+            # loop through support towers
+            for tower in self.support_towers:
+                tower.support(self.attack_towers)
 
             # loop through enemies and delete all enemies off the screen or run out health
             for enemy in self.enemies[:]:
@@ -83,8 +91,12 @@ class Game:
         for enemy in self.enemies:
             enemy.draw(self.win)
 
-        # draw towers
-        for tower in self.towers:
+        # draw attack towers
+        for tower in self.attack_towers:
+            tower.draw(self.win)
+
+        # draw support towers
+        for tower in self.support_towers:
             tower.draw(self.win)
 
         # draw lives
