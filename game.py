@@ -25,8 +25,9 @@ class Game:
         self.height = int(self.width / (1920 / 1080))
         self.win = pygame.display.set_mode((self.width, self.height))
         self.enemies = []
-        self.attack_towers = [ArcherTowerShort(300, 300), ArcherTowerShort(950, 380), ArcherTowerLong(280, 450)]
-        self.support_towers = [RangeTower(500, 100), DamageTower(500, 400)]
+        self.attack_towers = [ArcherTowerShort(300, 180), ArcherTowerShort(950, 380), ArcherTowerLong(280, 450)]
+        self.support_towers = [DamageTower(410, 180)]
+        self.all_towers = self.attack_towers + self.support_towers
         self.lives = 10
         self.money = 100
         self.bg = pygame.image.load(os.path.join("game_assets", "bg.png"))
@@ -40,11 +41,12 @@ class Game:
         self.timer = time.time()
         self.enemy_generate_time = random.randrange(1, 3) / 2
         self.life_font = pygame.font.SysFont('comicsans', 70)
+        self.selected_tower = None
 
     def run(self):
         run = True
         clock = pygame.time.Clock()
-        FPS = 60
+        fps = 60
 
         while run:
             # generate enemies every preselected time:
@@ -53,10 +55,22 @@ class Game:
                 self.enemies.append(random.choice([Scorpion(), Wizard(), Club()]))
                 self.enemy_generate_time = random.randrange(1, 3) / 2
 
-            clock.tick(FPS)
+            clock.tick(fps)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
+                pos = pygame.mouse.get_pos()
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for tower in self.all_towers:
+                        if tower.click(pos[0], pos[1]):
+                            tower.selected = True
+                            self.selected_tower = tower
+                        else:
+                            tower.selected = False
+
 
             # loop through attack towers
             for tower in self.attack_towers:

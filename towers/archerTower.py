@@ -11,7 +11,7 @@ class ArcherTower(Tower):
         self.tower_images = []
         self.archer_images = []
         self.left = False
-        self.range = 130
+        self.range = 1
         self.in_range = False
         self.timer = time.time()
 
@@ -41,7 +41,7 @@ class ArcherTower(Tower):
             add = archer.get_width() - 9
         else:
             add = 25
-        win.blit(archer, (self.x + self.width // 2 - add, self.y - archer.get_height() - 25))
+        win.blit(archer, (self.x - add, self.y - archer.get_height() - 25))
 
     def change_range(self, new_range):
         """

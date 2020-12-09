@@ -7,8 +7,8 @@ class Tower:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.height = 0
-        self.width = 0
+        self.height = 90
+        self.width = 90
         self.sell_price = [0, 0, 0]
         self.price = [0, 0, 0]
         self.level = 1
@@ -16,6 +16,11 @@ class Tower:
         self.menu = None
         self.tower_images = []
         self.damage = 1
+        self.range = None
+        self.affected = False
+        self.original_range = None
+        self.original_damage = None
+        self.selected = False
 
     def draw(self, win):
         """
@@ -27,22 +32,28 @@ class Tower:
         win.blit(img, (self.x - img.get_width() // 2, self.y - img.get_height() // 2))
 
     def draw_range_circle(self, win):
+        if self.selected:
+            # draw range circle
+            surface_circle = pygame.Surface((self.range * 2, self.range * 2)).convert_alpha()
+            pygame.draw.circle(surface_circle, (128, 128, 128, 100), (self.range, self.range), self.range, 0)
+            win.blit(surface_circle, (self.x - self.range, self.y - self.range))
 
-        # draw range circle
-        surface_circle = pygame.Surface((200 * 2, 200 * 2)).convert_alpha()
-        pygame.draw.circle(surface_circle, (128, 128, 128, 100), (self.range, self.range), self.range, 0)
-        win.blit(surface_circle, (self.x - self.range, self.y - self.range))
-
-    def click(self, X, Y):
+    def click(self, x, y):
         """
         Returns if tower has been clicked on and
         selects tower if it was clicked
-        :param X: int
-        :param Y: int
+        :param x: int
+        :param y: int
         :return: bool
         """
-        if self.x + self.width >= X >= self.x:
-            if self.y + self.height >= Y >= self.y:
+
+        # this need for move tower coordinates back because of drawing was with movement in 'draw(win)' method
+        tower_img = self.tower_images[self.level - 1]
+        tower_x = self.x - tower_img.get_width() // 2
+        tower_y = self.y - tower_img.get_height() // 2
+
+        if tower_x + self.width >= x >= tower_x:
+            if tower_y + self.height >= y >= tower_y:
                 return True
         return False
 

@@ -13,7 +13,11 @@ class ArcherTowerLong(ArcherTower):
         self.archer_images = self._load_archer_images()
 
         # differences
+        # todo how to fix this????
         self.range = 200
+        self.original_range = self.range
+        self.damage = 1
+        self.original_damage = self.damage
 
     def _load_tower_images(self):
         original_images = [pygame.image.load(os.path.join("game_assets/archer_towers/archerTowerLong", f"{x}.png")) for
