@@ -8,8 +8,6 @@ class ArcherTower(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.archer_count = 0
-        self.tower_images = []
-        self.archer_images = []
         self.left = False
         self.range = 1
         self.in_range = False

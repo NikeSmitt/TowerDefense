@@ -10,7 +10,7 @@ class EnemiesImages:
         self._club_images = None
 
     def get_scorpion_images(self, width=64, height=64):
-        if not self._scorpion_images:
+        if self._scorpion_images is None:
             original = [pygame.image.load(os.path.join(
                 "game_assets/enemies/1", f"1_enemies_1_run_0{x:02d}.png"
             )) for x
@@ -19,7 +19,7 @@ class EnemiesImages:
         return self._scorpion_images[:]
 
     def get_wizard_images(self, width=64, height=64):
-        if not self._wizard_images:
+        if self._wizard_images is None:
             original = [pygame.image.load(os.path.join(
                 "game_assets/enemies/2", f"2_enemies_1_run_0{x:02d}.png"
             )) for x in range(20)]
@@ -27,7 +27,7 @@ class EnemiesImages:
         return self._wizard_images[:]
 
     def get_club_images(self, width=64, height=64):
-        if not self._club_images:
+        if self._club_images is None:
             original = [pygame.image.load(os.path.join(
                 "game_assets/enemies/5", f"5_enemies_1_run_0{x:02d}.png"
             )) for x in range(20)]

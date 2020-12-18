@@ -1,9 +1,11 @@
 import pygame
 
+
 class Tower:
     """
     Abstract class for towers
     """
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -13,10 +15,9 @@ class Tower:
         self.price = [0, 0, 0]
         self.level = 1
         self.selected = False
-        self.menu = None
         self.tower_images = []
         self.damage = 1
-        self.range = None
+        self.range = 1
         self.affected = False
         self.original_range = None
         self.original_damage = None
@@ -30,6 +31,10 @@ class Tower:
         """
         img = self.tower_images[self.level - 1]
         win.blit(img, (self.x - img.get_width() // 2, self.y - img.get_height() // 2))
+
+    def draw_menu(self, win):
+        if self.selected:
+            self.menu.draw(win)
 
     def draw_range_circle(self, win):
         if self.selected:
@@ -69,8 +74,8 @@ class Tower:
         Upgrades the tower for a given cost
         :return: None
         """
-        self.level += 1
-        self.damage += 1
+        self.level = min(self.level, len(self.price)) + 1
+        self.damage = min(self.level, len(self.price)) + 1
 
     def get_upgrade_cost(self):
         """
@@ -82,4 +87,3 @@ class Tower:
     def move(self, x, y):
         self.x = x
         self.y = y
-

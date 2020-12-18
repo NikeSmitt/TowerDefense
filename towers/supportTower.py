@@ -8,7 +8,7 @@ class SupportTower(Tower):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.range = 100
-        self.tower_images = None
+        self.tower_images = []
         # amount of rise towers damage or range
 
     def _load_tower_images(self):
@@ -39,7 +39,7 @@ class SupportTower(Tower):
             else:
                 tower.affected = False
                 tower.range = tower.original_range
-                tower.damage = tower.original_range
+                tower.damage = tower.original_damage
         return supported_towers
 
     def support(self, towers):
